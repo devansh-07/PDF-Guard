@@ -1,0 +1,22 @@
+.navcustom {
+	background-color: #141414;
+}
+
+@-webkit-keyframes rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+#preloader {
+    width: 44px;
+    height: 44px;
+    border: #dc3545 2px solid;
+	border-top-color: transparent;
+	border-left-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: rotate 1.2s linear infinite;
+}
