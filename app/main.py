@@ -60,17 +60,17 @@ def result(flag):
     password = request.form.get("pass")
     file = request.files['file']
     name = secure_filename(file.filename)
-    file.save("files/" + name)
-    
+    file.save("app/files/" + name)
+
     if flag == "encr":
-        encname = encryptIt("files/" + name, password)
+        encname = encryptIt("app/files/" + name, password)
 
         if encname:
             return render_template('result.html', realname=file.filename, name=encname, flag=0)
         else:
             return render_template('result.html', err="It looks like the file you uploaded is already encrypted. Please go back and upload the encrypted file.")
     elif flag == "decr":
-        decname = decryptIt("files/" + name, password)
+        decname = decryptIt("app/files/" + name, password)
 
         if decname:
             return render_template('result.html', realname=file.filename, name=decname, flag=1)
