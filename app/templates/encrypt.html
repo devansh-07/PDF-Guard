@@ -13,7 +13,7 @@
     </head>
     <body style="background-color: #171717;">
         <!-- NavBar Start -->
-        <nav class="navbar navbar-expand-lg navbar-dark navcustom" style="font-family: 'Work Sans', sans-serif;">
+        <nav class="navbar navbar-expand-lg navbar-dark" style="font-family: 'Work Sans', sans-serif;">
             <a class="navbar-brand text-info py-0 pb-1" style="font-size: 20px;" href="{{ url_for('home') }}">PDF Guard</a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,6 +127,8 @@
 
         <!-- Animation part End -->
 
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='mainencr.js') }}"></script>
 
         <footer class="fixed-bottom p-0 text-white" style="background-color: #141414;">
