@@ -7,7 +7,7 @@ var animation = document.getElementById("encrAnimation");
 var mainDiv = document.getElementById("mainDiv");
 var header = document.getElementById("header");
 var intro = document.getElementById("intro");
-
+var disp = document.getElementById("disp");
 
 btn.addEventListener('click', showAnim);
 file.addEventListener("input", action);
@@ -43,9 +43,37 @@ function passmatch(){
 
 function action() {
 	if (file.value){
+		disp.innerHTML = file.value.split("\\").pop();
 		passform.style.display = 'block';
 	}
 	else{
+		disp.innerHTML = "Choose PDF file";
 		passform.style.display = 'none';
+	}
+}
+
+function passEye(){
+	var x = document.getElementById("pass");
+	var eye = document.getElementById("passeye");
+	if (x.type == "text"){
+		x.type = "password";
+		eye.className = "fa fa-eye-slash";
+	}
+	else{
+		x.type = "text";
+		eye.className = "fa fa-eye";
+	}
+}
+
+function confPassEye(){
+	var x = document.getElementById("confpass");
+	var eye = document.getElementById("confpasseye");
+	if (x.type == "text"){
+		x.type = "password";
+		eye.className = "fa fa-eye-slash";
+	}
+	else{
+		x.type = "text";
+		eye.className = "fa fa-eye";
 	}
 }

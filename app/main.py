@@ -66,9 +66,9 @@ def result(flag):
         encname = encryptIt("app/files/" + name, password)
 
         if encname:
-            return render_template('result.html', realname=file.filename, name=encname, flag=0)
+            return render_template('result.html', realname=file.filename, name=encname, flag=0, thePass=password)
         else:
-            return render_template('result.html', err="It looks like the file you uploaded is already encrypted. Please go back and upload the encrypted file.")
+            return render_template('result.html', err="It looks like the file you uploaded is already encrypted. Please go back and upload the correct file.")
     elif flag == "decr":
         decname = decryptIt("app/files/" + name, password)
 
