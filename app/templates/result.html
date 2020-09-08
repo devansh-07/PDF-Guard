@@ -91,13 +91,14 @@
 
         {% if flag in [0, 1] %}
             <div class="container my-5 pt-5 col-lg-5 col-sm-10 col-md-8 col-10 text-center">
-                <form method="get" action="{{ url_for('download', filename=name) }}">
+                <form method="post" action="{{ url_for('download', filename=name) }}">
                     {% if flag == 0 %}
                         <p class="text-white" style="font-family: 'Work Sans', sans-serif; font-size: 16px; overflow-wrap: break-word;">
                             This is the password of your PDF file.
                             <br>
                             Remember it or Note it down somewhere.
                         </p>
+
                         <div class="d-flex justify-content-center my-5">
                             <div class="input-group" style="max-width: 250px;">
                                 <input type="password" name="password" id="password" value="{{ thePass }}" class="form-control">
@@ -108,12 +109,19 @@
                                 </div>
                             </div>
                         </div>
+
                         <p class="text-danger text-center my-5" style="font-family: 'Work Sans', sans-serif; font-size: 18px; overflow-wrap: break-word;">
                             Please note: We don't keep your password or your file on our server.
                         </p>
                     {% endif %}
-                    <div class="text-center my-5">
-                        <button id="submit" type="submit" download="{{ name }}" target="_blank" class="btn btn-outline-success my-4" style="font-family: 'Work Sans', sans-serif; font-weight: bold; line-height: 24px; width: 160px;">Download PDF</button>
+                    <input type="hidden" name="q_name" value="{{ name }}">
+                    <div class="row my-5 d-flex justify-content-center">
+                        <div class="text-center col-lg-6 my-1" style="max-width: 250px;">
+                            <button id="submit" type="submit" download="{{ name }}" target="_blank" class="btn btn-outline-success my-4" style="font-family: 'Work Sans', sans-serif; font-weight: bold; line-height: 24px; width: 160px;">Download PDF</button>
+                        </div>
+                        <div class="text-center col-lg-6 my-1" style="max-width: 250px;">
+                            <button class="btn btn-outline-success my-4" formaction="mail" style="font-family: 'Work Sans', sans-serif; font-weight: bold; line-height: 24px; width: 160px;">Email PDF</button>
+                        </div>
                     </div>
                 </form>
             </div>

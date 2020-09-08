@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/pdficon.ico') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        {% if not showres %}
+            <title>Send Email | PDF Guard</title>
+        {% else %}
+            <title>Emails Sent | PDF Guard</title>
+        {% endif %}
+    </head>
+    <body style="background-color: #171717;">
+        <!-- NavBar Start -->
+        <nav class="navbar navbar-expand-lg navbar-dark navcustom" style="font-family: 'Work Sans', sans-serif;">
+            <a class="navbar-brand text-info py-0 pb-1" style="font-size: 20px;" href="{{ url_for('home') }}">PDF Guard</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="font-family: 'Work Sans', sans-serif; font-size: 16px;">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link mr-3 active" href="{{ url_for('home') }}">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link mr-3" href="{{ url_for('encrypt') }}">Encrypt</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link mr-3" href="{{ url_for('decrypt') }}">Decrypt</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link mr-3" href="{{ url_for('contact') }}">Contact Me</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <hr class="w-100 my-0 bg-info">
+        <!-- NavBar End -->
+
+        {% if not showres %}
+            <div>
+                <h1 id="header" class="text-center text-info mt-5 mb-2 mx-4" style="font-family: 'Work Sans', sans-serif; font-size: 36px;">Send PDF to Email</h1>
+
+                <div class="container text-white d-flex justify-content-center my-5">
+                    <div class="col-lg-10 col-md-8 col-sm-8 text-center">
+                        <p id="intro" class="mx-3" style="font-family: 'Work Sans', sans-serif; font-size: 16px; overflow-wrap: break-word;">
+                            Add the email addresses you want to send the your PDF file to, and click Send. That's it!
+                        </p>
+                    </div>
+                </div>
+
+                <form class="" action="sent" method="post">
+                    <input type="hidden" name="q_name1" value="{{ name }}">
+                    <div class="container-fluid my-5" style="font-family: 'Work Sans', sans-serif;">
+                        <div id="inpDiv" class="d-flex justify-content-center">
+                            <div class="form-group" id="mailform">
+                                <input type="email" name="email" class="form-control my-4" id="mailInp0" placeholder="person@example.com">
+                            </div>
+                        </div>
+
+                        <div id="addDiv" class="text-center mb-5 d-flex justify-content-center">
+                            <div class="col-lg-6 col-sm-12 mb-3">
+                                <button type="button" onclick="addInp()" class="btn btn-outline-info" style="border-radius: 40%; width: 36px; height: 36px; line-height: 18px; font-size: 18px;">+</button>
+                            </div>
+                        </div>
+
+                        <div class="text-center my-5 d-flex justify-content-center">
+                            <div class="col-lg-6 col-sm-12 my-3">
+                                <button type="submit" id="sendmail" class="btn btn-outline-danger" style="width: 100px;">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+            <div>
+                <h1 class="text-center text-success mt-5 mb-2" style="font-family: 'Work Sans', sans-serif; font-size: 36px;">Email sent</h1>
+
+                <div class="container text-white d-flex justify-content-center my-5">
+                    <div class="col-lg-10 col-md-8 col-sm-8 text-center">
+                        <p id="intro" class="mx-3" style="font-family: 'Work Sans', sans-serif; font-size: 18px; overflow-wrap: break-word;">
+                            Emails will be sent to the valid email addresses out of the given addresses with a link to the PDF file.
+                            <br>
+                            <br>
+                            The link will expire after 36 hours, so, don't forget to download it.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Animation part -->
+
+        <div id="encrAnimation" class="text-center mx-5" style="display: none; margin-top: 0em;">
+            <div class="d-flex justify-content-center mt-0 mb-4">
+                <div id="preloader">
+                </div>
+            </div>
+            <h2 class="text-danger", style="font-family: 'Work Sans', sans-serif; font-size: 24px;">Sending Emails</h2>
+            <p class="my-3" style="font-family: 'Work Sans', sans-serif; font-size: 16px; overflow-wrap: break-word; color: #999999;">
+                This will take a few seconds.
+            </p>
+        </div>
+
+        <!-- Animation part End -->
+
+        <script src="{{ url_for('static', filename='mail.js') }}" charset="utf-8"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        <footer class="fixed-bottom p-0 text-white" style="background-color: #141414;">
+            <hr class="w-100 my-0 bg-info text-center">
+            <h6 class="py-1 my-auto text-center" style="font-family: 'Work Sans', sans-serif; font-size: 12px;">
+            Made with ❤️ by <span style="color: orange;">De</span><span class="text-white">van</span><span class="text-success">sh</span>
+            </h6>
+        </footer>
+    </body>
+</html>

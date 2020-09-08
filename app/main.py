@@ -2,6 +2,8 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import send_from_directory
+from urllib.parse import urlencode
+import requests
 from PyPDF2 import PdfFileWriter, PdfFileReader
 from werkzeug.utils import secure_filename
 import os
@@ -55,29 +57,55 @@ def decryptIt(filename, password):
 
 app = Flask(__name__)
 
-@app.route('/result/<flag>', methods = ['POST'])
+@app.route('/result/<flag>', methods = ['GET', 'POST'])
 def result(flag):
-    password = request.form.get("pass")
-    file = request.files['file']
-    name = secure_filename(file.filename)
-    file.save("app/files/" + name)
+    if flag in ['encr', 'decr'] and request.method == "POST":
+        password = request.form.get("pass")
+        file = request.files['file']
+        name = secure_filename(file.filename)
+        file.save("app/files/" + name)
 
-    if flag == "encr":
-        encname = encryptIt("app/files/" + name, password)
+        if flag == "encr":
+            encname = encryptIt("app/files/" + name, password)
 
-        if encname:
-            return render_template('result.html', realname=file.filename, name=encname, flag=0, thePass=password)
+            if encname:
+                return render_template('result.html', realname=file.filename, name=encname, flag=0, thePass=password)
+            else:
+                return render_template('result.html', err="It looks like the file you uploaded is already encrypted. Please go back and upload the correct file.")
+        elif flag == "decr":
+            decname = decryptIt("app/files/" + name, password)
+
+            if decname:
+                return render_template('result.html', realname=file.filename, name=decname, flag=1)
+            else:
+                return render_template('result.html', err="Decryption failed due to one of the following reasons:  1. File is not encrypted,  2. You have entered wrong password.")
+    elif flag == "mail":
+        f_name = request.values['q_name']
+        return render_template('sendmail.html', showres=False, name=f_name)
+    elif flag == "sent":
+        email_list = request.form.getlist('email')
+        f_name = request.values['q_name1']
+        subject = "File from PDF Guard"
+        link = "https://pdfguard.herokuapp.com/"+f_name
+        msg = '''Hi, PDF Guard sent you this file.
+
+{}
+
+This link will expire in 36 hours, so, don't forget to download it.
+        '''.format(link)
+
+        payload = {'recipients': email_list, 'subject': subject, 'msg': msg, 'tkn': 'qw00qw'}
+        result = urlencode(payload)
+        res = requests.post('https://devsmail.herokuapp.com/?'+result)
+
+        if res.text == "1":
+            return render_template('sendmail.html', showres=True, name=f_name)
+        elif res.text == "0":
+            return render_template('sendmail.html', showres=False, title="Invalid request", err="Looks like the requested URL is invalid.")
         else:
-            return render_template('result.html', err="It looks like the file you uploaded is already encrypted. Please go back and upload the correct file.")
-    elif flag == "decr":
-        decname = decryptIt("app/files/" + name, password)
-
-        if decname:
-            return render_template('result.html', realname=file.filename, name=decname, flag=1)
-        else:
-            return render_template('result.html', err="Decryption failed due to one of the following reasons:  1. File is not encrypted,  2. You have entered wrong password.")
+            return render_template('sendmail.html', title="Invalid Email addresses", err="Looks like the email addresses you provided are invalid.")
     else:
-        return render_template('home.html')
+        return render_template('sendmail.html', showres=False)
 
 @app.route('/contact')
 def contact():
@@ -96,7 +124,7 @@ def decrypt():
 def encrypt():
     return render_template('encrypt.html')
 
-@app.route('/<path:filename>', methods=['GET'])
+@app.route('/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
     return send_from_directory(directory=os.getcwd()+"/", filename=filename)
 
