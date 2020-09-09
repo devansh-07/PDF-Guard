@@ -91,7 +91,7 @@
 
         {% if flag in [0, 1] %}
             <div class="container my-5 pt-5 col-lg-5 col-sm-10 col-md-8 col-10 text-center">
-                <form method="get" action="{{ url_for('download', filename=name) }}">
+                <form method="post" action="{{ url_for('download', filename=name) }}">
                     {% if flag == 0 %}
                         <p class="text-white" style="font-family: 'Work Sans', sans-serif; font-size: 16px; overflow-wrap: break-word;">
                             This is the password of your PDF file.
