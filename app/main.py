@@ -126,6 +126,7 @@ def encrypt():
 
 @app.route('/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
+    print(os.getcwd()+"/")
     return send_from_directory(directory=os.getcwd()+"/", filename=filename)
 
 if __name__ == '__main__':
