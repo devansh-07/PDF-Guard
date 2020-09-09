@@ -91,7 +91,7 @@
 
         {% if flag in [0, 1] %}
             <div class="container my-5 pt-5 col-lg-5 col-sm-10 col-md-8 col-10 text-center">
-                <form method="post" action="{{ url_for('download', filename=name) }}">
+                <form method="get" action="{{ url_for('download', filename=name) }}">
                     {% if flag == 0 %}
                         <p class="text-white" style="font-family: 'Work Sans', sans-serif; font-size: 16px; overflow-wrap: break-word;">
                             This is the password of your PDF file.
@@ -101,7 +101,7 @@
 
                         <div class="d-flex justify-content-center my-5">
                             <div class="input-group" style="max-width: 250px;">
-                                <input type="password" name="password" id="password" value="{{ thePass }}" class="form-control">
+                                <input type="password" name="password" id="password" value="{{ thePass }}" class="form-control" disabled>
                                 <div class="input-group-append">
                                     <span class="input-group-text">
                                         <i class="fa fa-eye-slash" id="eye" onclick="passEye()" style="cursor: pointer;"></i>
