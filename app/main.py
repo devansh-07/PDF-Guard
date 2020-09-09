@@ -2,7 +2,6 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import send_from_directory
-from flask import redirect
 from urllib.parse import urlencode
 import requests
 from PyPDF2 import PdfFileWriter, PdfFileReader
@@ -127,8 +126,7 @@ def encrypt():
 
 @app.route('/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
-    print(os.getcwd()+"/")
-    return redirect("https://pdfguard.herokuapp.com/"+filename)
+    return send_from_directory(directory=os.getcwd()+"/", filename=filename)
 
 if __name__ == '__main__':
    app.run(debug = True)
